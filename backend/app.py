@@ -30,7 +30,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     return jsonify({"access_token": access_token}), 201
 
 
@@ -41,25 +41,28 @@ def login():
     if not user or not user.check_password(data.get("password", "")):
         return jsonify({"msg": "Bad credentials"}), 401
 
-    return jsonify({"access_token": create_access_token(identity=user.id)}), 200
+    return jsonify({"access_token": create_access_token(identity=str(user.id))}), 200
 
 # ----------  Preference endpoint (protected)  ---------- #
-@app.post("/api/preferences")
+@app.route("/api/preferences", methods=["POST"])
 @jwt_required()
 def save_preferences():
-    uid      = get_jwt_identity()
-    payload  = request.get_json()     # expects { mood: choice, ... }
-    allowed  = {"stressed", "sad", "angry", "happy", "bored"}
+    uid = get_jwt_identity()
+    payload = request.get_json()
 
-    # wipe existing, then store new
+    allowed_moods = {"stressed", "sad", "angry", "happy", "bored"}
+
+    # Clear existing preferences for this user
     MoodPreference.query.filter_by(user_id=uid).delete()
+
     for mood, choice in payload.items():
-        if mood in allowed:
-            db.session.add(MoodPreference(
-                mood=mood, choice=choice, user_id=uid
-            ))
+        if mood in allowed_moods:
+            pref = MoodPreference(mood=mood, choice=choice, user_id=uid)
+            db.session.add(pref)
+
     db.session.commit()
-    return jsonify({"msg": "Preferences saved"}), 200
+    return jsonify({"msg": "Preferences saved successfully."}), 200
+
 
 @app.route("/api/ping")
 def ping():
