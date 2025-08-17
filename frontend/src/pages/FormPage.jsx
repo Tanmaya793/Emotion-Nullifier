@@ -1,4 +1,3 @@
-// src/pages/FormPage.jsx
 
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -53,7 +52,6 @@ const FormPage = () => {
 
       if (res.ok) {
         alert("Preferences saved successfully!");
-        // Optional: navigate to a "Thank You" or Dashboard page
       } else {
         alert(data.msg || "Failed to save preferences.");
       }

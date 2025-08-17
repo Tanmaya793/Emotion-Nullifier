@@ -3,5 +3,5 @@ Flask-CORS==4.0.0
 Flask-SQLAlchemy==3.1.1
 Flask-Migrate==4.0.5
 Flask-JWT-Extended==4.7.0
-passlib[argon2]==1.7.4      # Argon2 hashing
-python-dotenv==1.0.1        # load secrets from .env if you like
+passlib[argon2]==1.7.4 
+python-dotenv==1.0.1       

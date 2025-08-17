@@ -8,10 +8,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<RegisterPage />} />   {/* Default landing */}
+        <Route path="/" element={<RegisterPage />} />  
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/form" element={<FormPage />} />   {/* Mood preference page */}
+        <Route path="/form" element={<FormPage />} />   
       </Routes>
     </Router>
   );

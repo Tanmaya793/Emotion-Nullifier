@@ -13,7 +13,6 @@ db.init_app(app)
 CORS(app, supports_credentials=True)
 jwt = JWTManager(app)
 
-# ----------  Auth endpoints  ---------- #
 @app.post("/api/register")
 def register():
     data = request.get_json()
@@ -43,7 +42,6 @@ def login():
 
     return jsonify({"access_token": create_access_token(identity=str(user.id))}), 200
 
-# ----------  Preference endpoint (protected)  ---------- #
 @app.route("/api/preferences", methods=["POST"])
 @jwt_required()
 def save_preferences():
@@ -52,7 +50,6 @@ def save_preferences():
 
     allowed_moods = {"stressed", "sad", "angry", "happy", "bored"}
 
-    # Clear existing preferences for this user
     MoodPreference.query.filter_by(user_id=uid).delete()
 
     for mood, choice in payload.items():
